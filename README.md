@@ -11,9 +11,9 @@ The clickable mockup is in [`Interactive Mockup/`](Interactive%20Mockup/). Downl
 
 ## Team
 
-| Name | Student ID |
-|------|------------|
-| Alexandra Karvela | 3230066 |
-| Antonios Nerantzakis | 3230139 |
+| Name | Student ID | Student Email |
+|------|------------|--------------|
+| Alexandra Karvela | 3230066 | p3230066@aueb.gr
+| Antonios Nerantzakis | 3230139 | p3230139@aueb.gr
 
 Please let us know if we should make any changes to fully match the requirements of the description.
