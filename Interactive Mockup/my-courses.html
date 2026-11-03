@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your courses · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="myCourses">
+  <div class="phone counter-scope">
+    <header class="top">
+      <a class="back" href="recommendations.html" aria-label="Back to courses"></a>
+      <div>
+        <h1>Your courses</h1>
+        <p id="courses-subtitle"></p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <p class="muted">These are the courses you have passed. Tick or untick any of them. Your recommendations update to match.</p>
+        <div class="content-flow" id="course-groups"></div>
+      </div>
+    </main>
+    <div class="footer">
+      <span class="picked"></span>
+      <a class="btn" href="recommendations.html">Done</a>
+    </div>
+  </div>
+</body>
+</html>

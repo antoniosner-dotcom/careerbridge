@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your details · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="myProfile">
+  <div class="phone">
+    <header class="top">
+      <a class="back" href="home.html" aria-label="Back to home"></a>
+      <div>
+        <h1>Your details</h1>
+        <p>Saved as you go</p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <label class="field">Your name
+          <input type="text" id="name" autocomplete="given-name">
+        </label>
+
+        <div>
+          <p class="label">Year of study</p>
+          <div class="chips">
+            <input class="sr" type="radio" name="year" id="y1" value="1"><label class="chip" for="y1">1st</label>
+            <input class="sr" type="radio" name="year" id="y2" value="2"><label class="chip" for="y2">2nd</label>
+            <input class="sr" type="radio" name="year" id="y3" value="3"><label class="chip" for="y3">3rd</label>
+            <input class="sr" type="radio" name="year" id="y4" value="4"><label class="chip" for="y4">4th</label>
+          </div>
+        </div>      </div>
+    </main>
+    <div class="footer">
+      <a class="btn" href="home.html">Done</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About you · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="setupProfile">
+  <div class="phone">
+    <header class="top">
+      <a class="back" href="index.html" aria-label="Back"></a>
+      <div>
+        <h1>About you</h1>
+        <p>Step 1 of 3</p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <div class="bar progress" style="--now:33%" role="img" aria-label="Step 1 of 3"></div>
+        <p class="note">Sample answers are already filled in. Your changes are saved as you go. Changing department starts your course list and plan over.</p>
+
+        <label class="field">Your name
+          <input type="text" id="name" autocomplete="given-name">
+        </label>
+
+        <label class="field">University
+          <select>
+            <option>Athens University of Economics and Business</option>
+          </select>
+        </label>
+
+        <div>
+          <p class="label">Department</p>
+          <div class="stack">
+            <div>
+              <input class="sr" type="radio" name="department" id="d-inf" value="informatics">
+              <label class="choice" for="d-inf"><strong>Informatics</strong></label>
+            </div>
+            <div>
+              <input class="sr" type="radio" name="department" id="d-mst" value="mst">
+              <label class="choice" for="d-mst"><strong>Management Science and Technology</strong></label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="label">Year of study</p>
+          <div class="chips">
+            <input class="sr" type="radio" name="year" id="y1" value="1"><label class="chip" for="y1">1st</label>
+            <input class="sr" type="radio" name="year" id="y2" value="2"><label class="chip" for="y2">2nd</label>
+            <input class="sr" type="radio" name="year" id="y3" value="3"><label class="chip" for="y3">3rd</label>
+            <input class="sr" type="radio" name="year" id="y4" value="4"><label class="chip" for="y4">4th</label>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer">
+      <a class="btn" href="setup-courses.html">Continue</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recommended courses · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="recommendations">
+  <div class="phone">
+    <header class="top">
+      <div>
+        <h1>Recommended courses</h1>
+        <p id="career-subtitle">For your career goal</p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <a class="btn ghost" id="my-courses" href="my-courses.html">Your completed courses</a>
+
+        <div class="chips">
+          <input class="sr" type="radio" name="filter" id="f-all" checked><label class="chip" for="f-all">All</label>
+          <input class="sr" type="radio" name="filter" id="f-now"><label class="chip" for="f-now">Available now</label>
+          <input class="sr" type="radio" name="filter" id="f-later"><label class="chip" for="f-later">Unlock later</label>
+        </div>
+
+        <section class="now">
+          <div class="section-head"><h2 id="now-title">Available now</h2></div>
+          <div class="stack" id="now-list"></div>
+        </section>
+
+        <section class="later">
+          <div class="section-head"><h2 id="later-title">Unlock later</h2></div>
+          <div class="stack" id="later-list"></div>
+        </section>
+
+        <details class="card">
+          <summary>How does the match score work?</summary>
+          <ol>
+            <li>Each course and career is linked to a set of skills.</li>
+            <li>We check which skills your completed courses already cover.</li>
+            <li>A course scores higher when it fills bigger gaps in the skills your career needs most.</li>
+          </ol>
+          <p class="small">A score compares courses with each other. It is not a chance of getting a job. In this mockup, scores are random placeholders until the algorithm is built.</p>
+        </details>
+      </div>
+    </main>
+    <nav class="tabs" aria-label="Main">
+      <a class="tab tab-home" href="home.html">Home</a>
+      <a class="tab tab-courses" href="recommendations.html" aria-current="page">Courses</a>
+      <a class="tab tab-compare" href="compare.html">Compare</a>
+      <a class="tab tab-plan" href="plan.html">Plan</a>
+    </nav>
+  </div>
+</body>
+</html>

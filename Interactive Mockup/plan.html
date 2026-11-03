@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My plan · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="plan">
+  <div class="phone">
+    <header class="top">
+      <div>
+        <h1>My plan</h1>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content" id="plan-empty" hidden>
+        <section class="card stack">
+          <h3>Your plan is empty</h3>
+          <p class="muted">Add recommended courses to see how far they take you and how busy your semester will be.</p>
+          <a class="btn" href="recommendations.html">Browse courses</a>
+        </section>
+      </div>
+
+      <div class="content" id="plan-full">
+        <section class="card fit">
+          <h2 class="card-title" id="fit-title">Skills with this plan</h2>
+          <p class="fit-figure"><span id="fit-next"></span><span class="small" id="fit-text"></span></p>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Courses</h2>
+            <a href="recommendations.html">Add more</a>
+          </div>
+          <ul class="card rows" id="plan-list"></ul>
+        </section>
+
+        <section>
+          <div class="section-head"><h2>Workload forecast</h2></div>
+          <div class="card stack">
+            <div>
+              <p class="small">Predicted study time</p>
+              <p class="forecast"><span id="total-hours"></span> <span class="small">per week</span></p>
+            </div>
+
+            <label class="field" for="hours">
+              <span class="skill-name">How many hours can you study each week? <span id="hours-value"></span></span>
+              <input class="range" type="range" id="hours" min="5" max="60" step="1">
+            </label>
+
+            <p class="verdict" id="verdict"></p>
+            <p class="small">A prediction, not a guarantee. The real app will learn from past students' workload data.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <nav class="tabs" aria-label="Main">
+      <a class="tab tab-home" href="home.html">Home</a>
+      <a class="tab tab-courses" href="recommendations.html">Courses</a>
+      <a class="tab tab-compare" href="compare.html">Compare</a>
+      <a class="tab tab-plan" href="plan.html" aria-current="page">Plan</a>
+    </nav>
+  </div>
+</body>
+</html>

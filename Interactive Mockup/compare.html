@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compare courses · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="compare">
+  <div class="phone">
+    <header class="top">
+      <div>
+        <h1>Compare two courses</h1>
+        <p>See how each would change your skills</p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <div class="card stack">
+          <label class="field">Course A
+            <select id="pick-a"></select>
+          </label>
+          <label class="field">Course B
+            <select id="pick-b"></select>
+          </label>
+        </div>
+        <div class="content-flow" id="comparison"></div>
+      </div>
+    </main>
+    <nav class="tabs" aria-label="Main">
+      <a class="tab tab-home" href="home.html">Home</a>
+      <a class="tab tab-courses" href="recommendations.html">Courses</a>
+      <a class="tab tab-compare" href="compare.html" aria-current="page">Compare</a>
+      <a class="tab tab-plan" href="plan.html">Plan</a>
+    </nav>
+  </div>
+</body>
+</html>

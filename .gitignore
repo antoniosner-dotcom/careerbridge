@@ -1,0 +1,5 @@
+# Only folders listed below are tracked. To add another one later,
+# add a line like: !careerbridge/
+/*
+!.gitignore
+!Interactive Mockup/

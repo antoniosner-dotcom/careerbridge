@@ -1,0 +1,1136 @@
+/* CareerBridge mockup: one stylesheet shared by every screen. Behaviour lives in app.js. */
+
+:root {
+  /* Neutral ramp, a touch warm like the paper of a printed course guide */
+  --backdrop: #ebebe8;
+  --canvas: #fafaf9;
+  --surface: #ffffff;
+  --raised: #f2f2f0;
+  --track: #e6e6e3;
+  --line: rgb(23 23 23 / 0.08);
+  --line-strong: rgb(23 23 23 / 0.16);
+  --text: #171717;
+  --text-2: #525252;
+  --text-3: #6b6b6b;
+  --ink-bar: #3d3d3d;
+
+  /* One accent, the registrar red: the primary action, the selection and what a plan adds */
+  --accent: #9e2a2b;
+  --accent-hover: #85201f;
+  --accent-soft: #f7eded;
+
+  --good: #1f7a4a;
+  --warn: #9a6200;
+  --bad: #b42318;
+
+  --mono: ui-monospace, 'Cascadia Mono', 'Cascadia Code', Consolas, 'SF Mono', monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Line icons (lucide paths, 1.5 stroke), drawn with mask so they take the text color */
+  --icon-back: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+  --icon-forward: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+  --icon-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+  --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--backdrop);
+  color: var(--text);
+  font: 14px/20px 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible + label,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Phone frame and page layout */
+
+.phone {
+  display: flex;
+  flex-direction: column;
+  width: 390px;
+  height: min(844px, calc(100dvh - 32px));
+  overflow: hidden;
+  border-radius: 32px;
+  background: var(--canvas);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 24px 48px rgb(0 0 0 / 0.08);
+}
+
+@media (max-width: 480px) {
+  .phone {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.stack {
+  display: grid;
+  gap: 8px;
+}
+
+.content {
+  display: grid;
+  gap: 24px;
+  padding: 16px 16px 24px;
+}
+
+/* A container filled by app.js that keeps the same spacing as .content */
+.content-flow {
+  display: grid;
+  gap: 24px;
+}
+
+/* Page headers */
+
+.top {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 16px 8px;
+}
+
+.top h1 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.top p {
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+/* The student's profile on Home: the one header set on the accent, so it reads as its own section.
+   Each row opens its own edit page; setup screens are never reached from here. */
+.profile {
+  display: grid;
+  flex: none;
+  gap: 4px;
+  padding: 16px 16px 12px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.profile p {
+  color: rgb(255 255 255 / 0.8);
+  font-size: 13px;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -8px;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background-color 150ms var(--ease);
+}
+
+/* Only rows that open something get the arrow and the hover */
+a.profile-row::after {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: rgb(255 255 255 / 0.7);
+  mask: var(--icon-forward) center / contain no-repeat;
+}
+
+a.profile-row:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile h1 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.profile-goal {
+  padding-top: 4px;
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+
+.profile-goal .profile-main {
+  color: rgb(255 255 255 / 0.8);
+  font-size: 13px;
+}
+
+.profile-goal strong {
+  font-size: 15px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.profile .text-link {
+  color: #fff;
+}
+
+.profile .text-link:hover {
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+}
+
+.profile :focus-visible {
+  outline-color: #fff;
+}
+
+/* A line of facts that wraps between parts, never inside one */
+.meta-parts span {
+  white-space: nowrap;
+}
+
+.meta-parts span:not(:last-child)::after {
+  content: ' ·';
+}
+
+.back {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: -8px;
+  border-radius: 8px;
+  color: var(--text);
+  transition: background-color 150ms var(--ease);
+}
+
+.back::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: var(--icon-back) center / contain no-repeat;
+}
+
+.back:hover {
+  background: var(--raised);
+}
+
+.text-link {
+  margin-right: -8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 150ms var(--ease), background-color 150ms var(--ease);
+}
+
+.text-link:hover {
+  background: var(--raised);
+  color: var(--text);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.brand svg {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+/* Career fit: the one large figure on Home and Plan */
+
+.fit {
+  display: grid;
+  gap: 4px;
+}
+
+.card-title {
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.fit-figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.fit-figure > :first-child {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.gain {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.gain::before {
+  content: '→ ';
+}
+
+.fit .small {
+  margin-top: 4px;
+}
+
+/* Progress bar: --now is the solid part, --next what the plan or course adds behind it */
+
+.bar {
+  --now: 0%;
+  --next: 0%;
+  height: 6px;
+  border-radius: 3px;
+  background:
+    linear-gradient(var(--ink-bar), var(--ink-bar)) 0 0 / var(--now) 100% no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 0 0 / var(--next) 100% no-repeat,
+    var(--track);
+}
+
+.bar.b {
+  background:
+    linear-gradient(var(--accent), var(--accent)) 0 0 / var(--now) 100% no-repeat,
+    var(--track);
+}
+
+.skill-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.skill-name span {
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.skills {
+  display: grid;
+  gap: 16px;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.key::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 2px;
+  background: var(--ink-bar);
+}
+
+.key.next::before {
+  background: var(--accent);
+}
+
+.compare-bar {
+  display: grid;
+  grid-template-columns: 16px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cards, lists and small labels */
+
+.card {
+  display: block;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: border-color 150ms var(--ease);
+}
+
+.card.stack {
+  display: grid;
+  gap: 16px;
+}
+
+a.card:hover {
+  border-color: var(--line-strong);
+}
+
+.card h3 {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.muted {
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.small {
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.section-head h2 {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.section-head a {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.section-head a:hover {
+  color: var(--accent-hover);
+}
+
+/* Three figures in one card, split by hairlines */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0;
+}
+
+.stat {
+  padding: 12px 16px;
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--line);
+}
+
+.stat strong {
+  display: block;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat span {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.rec-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* The course-guide line: code, ECTS and semester in mono, wherever a course appears */
+.meta {
+  margin-top: 4px;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.match {
+  flex: none;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.match small {
+  display: block;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.rec-why {
+  margin-top: 8px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+/* Status: a coloured dot and a word, never a filled pill */
+
+.statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.card .statuses {
+  margin-top: 8px;
+}
+
+.status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.status.good {
+  color: var(--good);
+}
+
+.status.good::before {
+  background: var(--good);
+}
+
+.status.warn {
+  color: var(--warn);
+}
+
+.status.warn::before {
+  background: var(--warn);
+}
+
+.status.bad {
+  color: var(--bad);
+}
+
+.status.bad::before {
+  background: var(--bad);
+}
+
+.note {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--raised);
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.toast::before {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: var(--good);
+  mask: var(--icon-check) center / contain no-repeat;
+}
+
+.toast a {
+  margin-left: auto;
+  color: var(--accent);
+}
+
+.rows > * {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.rows > * + * {
+  border-top: 1px solid var(--line);
+}
+
+.card.rows {
+  padding: 4px 16px;
+}
+
+.rows strong {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.rows .meta {
+  display: block;
+}
+
+.card .rows {
+  margin-top: 4px;
+}
+
+details summary {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+details ol {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+  padding-left: 20px;
+  list-style: decimal;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+details .small {
+  margin-top: 12px;
+}
+
+.remove {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: color 150ms var(--ease), background-color 150ms var(--ease);
+}
+
+.remove::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  mask: var(--icon-x) center / contain no-repeat;
+  pointer-events: none;
+}
+
+.remove:hover {
+  background: var(--raised);
+  color: var(--bad);
+}
+
+.field .range {
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  accent-color: var(--accent);
+}
+
+.forecast {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.forecast .small {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.verdict {
+  display: grid;
+  gap: 4px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+/* Buttons */
+
+.btn {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 150ms var(--ease), border-color 150ms var(--ease), transform 120ms var(--ease);
+}
+
+.btn:hover {
+  background: var(--accent-hover);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+.btn.ghost {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn.ghost:hover {
+  background: var(--raised);
+}
+
+.btn.locked,
+.btn.locked:hover {
+  border-color: transparent;
+  background: var(--raised);
+  color: var(--text-3);
+  transform: none;
+}
+
+.footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+/* Native inputs, restyled. Hidden visually but still clickable and keyboard reachable. */
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease), background-color 150ms var(--ease), color 150ms var(--ease);
+}
+
+.chip:hover {
+  color: var(--text);
+}
+
+.sr:checked + .chip {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* A choice card with its own radio mark on the right */
+.choice {
+  position: relative;
+  display: block;
+  padding: 12px 48px 12px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+
+.choice::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.choice strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.choice .muted {
+  display: block;
+  margin-top: 4px;
+}
+
+.sr:disabled + .choice {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sr:checked + .choice {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.sr:checked + .choice::after {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.label {
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.card h3 + .check {
+  margin-top: 4px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.check + .check {
+  border-top: 1px solid var(--line);
+}
+
+.check input {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* The selected-course count on the setup screen is a CSS counter, not a stored number. */
+
+.counter-scope {
+  counter-reset: picked;
+}
+
+.check input:checked {
+  counter-increment: picked;
+}
+
+.picked::before {
+  content: counter(picked) ' courses selected';
+}
+
+.picked {
+  flex: none;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* Onboarding progress */
+
+.progress {
+  --now: 33%;
+  height: 4px;
+  border-radius: 2px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 0 0 / var(--now) 100% no-repeat,
+    var(--track);
+}
+
+/* Welcome screen */
+
+.intro {
+  padding: 24px 20px 0;
+}
+
+.intro h1 {
+  margin-top: 40px;
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 500;
+}
+
+.lede {
+  margin-top: 12px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* A sample result on the welcome screen, so the page shows what the app produces */
+.preview {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.how {
+  display: grid;
+  gap: 16px;
+  padding: 24px 20px;
+}
+
+.how li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+}
+
+.how b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.how strong {
+  display: block;
+  font-weight: 500;
+}
+
+.how .muted {
+  display: block;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Bottom tabs */
+
+.tabs {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 8px 8px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.tab {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  border-radius: 8px;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  transition: color 150ms var(--ease);
+}
+
+.tab::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab[aria-current='page'] {
+  color: var(--accent);
+}
+
+.tab-home {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z'/%3E%3C/svg%3E");
+}
+
+.tab-courses {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2zM4 20a2 2 0 0 0 2 1h14v-3'/%3E%3C/svg%3E");
+}
+
+.tab-compare {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 4v15m0 0l-3-3m3 3l3-3M17 20V5m0 0l-3 3m3-3l3 3'/%3E%3C/svg%3E");
+}
+
+.tab-plan {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E");
+}
+
+/* Recommendation filter chips need no script: the checked radio hides the other section. */
+
+body:has(#f-now:checked) .later,
+body:has(#f-later:checked) .now {
+  display: none;
+}

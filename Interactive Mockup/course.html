@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course · CareerBridge</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-page="course">
+  <div class="phone">
+    <header class="top">
+      <a class="back" href="recommendations.html" aria-label="Back to courses"></a>
+      <div>
+        <h1 id="title"></h1>
+        <p id="subtitle"></p>
+      </div>
+    </header>
+    <main class="screen">
+      <div class="content">
+        <p class="toast" id="toast" role="status" hidden></p>
+        <div class="content-flow" id="course-body"></div>
+      </div>
+    </main>
+    <div class="footer">
+      <a class="btn ghost" id="compare-link" href="compare.html">Compare</a>
+      <button class="btn" id="plan-action" type="button">Add to plan</button>
+    </div>
+  </div>
+</body>
+</html>
