@@ -15,3 +15,5 @@ The clickable mockup is in [`Interactive Mockup/`](Interactive%20Mockup/). Downl
 |------|------------|
 | Alexandra Karvela | 3230066 |
 | Antonios Nerantzakis | 3230139 |
+
+Please let us know if we should make any changes to fully match the requirements of the description.
