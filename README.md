@@ -13,5 +13,5 @@ The clickable mockup is in [`Interactive Mockup/`](Interactive%20Mockup/). Downl
 
 | Name | Student ID |
 |------|------------|
-| [Name] | [ID] |
-| [Name] | [ID] |
+| Alexandra Karvela | 3230066 |
+| Antonios Nerantzakis | 3230139 |
