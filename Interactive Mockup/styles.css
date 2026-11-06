@@ -2,22 +2,22 @@
 
 :root {
   /* Neutral ramp, a touch warm like the paper of a printed course guide */
-  --backdrop: #ebebe8;
-  --canvas: #fafaf9;
-  --surface: #ffffff;
-  --raised: #f2f2f0;
-  --track: #e6e6e3;
-  --line: rgb(23 23 23 / 0.08);
-  --line-strong: rgb(23 23 23 / 0.16);
-  --text: #171717;
-  --text-2: #525252;
-  --text-3: #6b6b6b;
+  --backdrop: #f3e9e6;
+  --canvas: #fffaf8;
+  --surface: #fffdfc;
+  --raised: #fbefec;
+  --track: #f0d9d5;
+  --line: rgb(77 32 29 / 0.09);
+  --line-strong: rgb(77 32 29 / 0.17);
+  --text: #251a19;
+  --text-2: #655452;
+  --text-3: #82716e;
   --ink-bar: #3d3d3d;
 
   /* One accent, the registrar red: the primary action, the selection and what a plan adds */
-  --accent: #9e2a2b;
-  --accent-hover: #85201f;
-  --accent-soft: #f7eded;
+  --accent: #a22c31;
+  --accent-hover: #842226;
+  --accent-soft: #f9e8e5;
 
   --good: #1f7a4a;
   --warn: #9a6200;
@@ -51,7 +51,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--backdrop);
+  background: radial-gradient(ellipse at 50% 8%, #fff8f6 0, var(--backdrop) 72%);
   color: var(--text);
   font: 14px/20px 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -98,9 +98,9 @@ summary:focus-visible {
   border-radius: 32px;
   background: var(--canvas);
   box-shadow:
-    0 0 0 1px var(--line),
-    0 1px 2px rgb(0 0 0 / 0.04),
-    0 24px 48px rgb(0 0 0 / 0.08);
+    0 0 0 1px rgb(116 53 49 / 0.1),
+    0 1px 2px rgb(55 23 20 / 0.04),
+    0 24px 48px rgb(75 30 28 / 0.1);
 }
 
 @media (max-width: 480px) {
@@ -139,11 +139,26 @@ summary:focus-visible {
 /* Page headers */
 
 .top {
+  position: relative;
   display: flex;
   flex: none;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 20px 16px 8px;
+  padding: 22px 48px 16px;
+  border-radius: 0 0 24px 24px;
+  background: linear-gradient(180deg, #f7e5e2 0%, #fff8f6 74%, rgb(255 250 248 / 0) 100%);
+  text-align: center;
+}
+
+.top > div {
+  min-width: 0;
+}
+
+.top .back {
+  position: absolute;
+  left: 16px;
+  top: 22px;
 }
 
 .top h1 {
@@ -163,8 +178,9 @@ summary:focus-visible {
   display: grid;
   flex: none;
   gap: 4px;
-  padding: 16px 16px 12px;
-  background: var(--accent);
+  padding: 16px 16px 18px;
+  border-radius: 0 0 26px 26px;
+  background: linear-gradient(180deg, #8e2429 0%, #a93439 38%, #c75a5c 72%, #d98b87 100%);
   color: #fff;
 }
 
@@ -185,7 +201,9 @@ summary:focus-visible {
   gap: 12px;
   margin: 0 -8px;
   padding: 8px;
-  border-radius: 10px;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.1);
   transition: background-color 150ms var(--ease);
 }
 
@@ -216,7 +234,6 @@ a.profile-row:hover {
 
 .profile-goal {
   padding-top: 4px;
-  border-top: 1px solid rgb(255 255 255 / 0.16);
 }
 
 .profile-goal .profile-main {
@@ -309,16 +326,18 @@ a.profile-row:hover {
 .brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 21px;
   line-height: 24px;
   font-weight: 600;
+  text-align: center;
 }
 
-.brand svg {
-  width: 24px;
-  height: 24px;
-  color: var(--accent);
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 /* Career fit: the one large figure on Home and Plan */
@@ -445,8 +464,9 @@ a.profile-row:hover {
   display: block;
   padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fffdfc 0%, #fff8f6 100%);
+  box-shadow: 0 6px 18px rgb(90 39 35 / 0.055);
   transition: border-color 150ms var(--ease);
 }
 
@@ -463,6 +483,36 @@ a.card:hover {
   font-size: 15px;
   line-height: 20px;
   font-weight: 500;
+}
+
+.semester-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.semester-head h3 {
+  flex: 1;
+}
+
+.select-all {
+  flex: none;
+  padding: 5px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.select-all:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .muted {
@@ -781,7 +831,7 @@ details .small {
   padding: 0 16px;
   border: 1px solid transparent;
   border-radius: 10px;
-  background: var(--accent);
+  background: linear-gradient(100deg, #bd3e42, #98282d);
   color: #fff;
   font: inherit;
   font-size: 15px;
@@ -792,7 +842,7 @@ details .small {
 }
 
 .btn:hover {
-  background: var(--accent-hover);
+  background: linear-gradient(100deg, #a83237, var(--accent-hover));
 }
 
 .btn:active {
@@ -828,7 +878,15 @@ details .small {
   gap: 8px;
   padding: 12px 16px 16px;
   border-top: 1px solid var(--line);
-  background: var(--surface);
+  background: linear-gradient(180deg, rgb(255 250 248 / 0.92), #fffdfc 38%);
+  backdrop-filter: blur(12px);
+}
+
+.footer .btn {
+  min-height: 50px;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgb(142 36 41 / 0.18);
 }
 
 /* Native inputs, restyled. Hidden visually but still clickable and keyboard reachable. */
@@ -864,8 +922,8 @@ details .small {
 
 .sr:checked + .chip {
   border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: linear-gradient(100deg, #bd3e42, #98282d);
+  color: #fff;
 }
 
 /* A choice card with its own radio mark on the right */
@@ -874,7 +932,7 @@ details .small {
   display: block;
   padding: 12px 48px 12px 16px;
   border: 1px solid var(--line-strong);
-  border-radius: 10px;
+  border-radius: 15px;
   background: var(--surface);
   cursor: pointer;
   transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
@@ -911,6 +969,7 @@ details .small {
 
 .sr:checked + .choice {
   border-color: var(--accent);
+  background: var(--accent-soft);
   box-shadow: inset 0 0 0 1px var(--accent);
 }
 
@@ -940,6 +999,28 @@ details .small {
   font: inherit;
   font-size: 14px;
   font-weight: 400;
+}
+
+.fixed-field p {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--raised);
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.empty-hint {
+  padding: 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff8f6, #fbefec);
+  color: var(--text-2);
+  text-align: center;
 }
 
 .label {
@@ -980,6 +1061,17 @@ details .small {
   counter-reset: picked;
 }
 
+.check-course {
+  display: grid;
+  gap: 1px;
+}
+
+.check-course small {
+  color: var(--text-3);
+  font-size: 11px;
+  line-height: 14px;
+}
+
 .check input:checked {
   counter-increment: picked;
 }
@@ -1010,13 +1102,15 @@ details .small {
 
 .intro {
   padding: 24px 20px 0;
+  background: linear-gradient(180deg, #f8e7e4 0%, #fffaf8 38%, transparent 100%);
 }
 
 .intro h1 {
-  margin-top: 40px;
+  margin-top: 20px;
   font-size: 28px;
   line-height: 34px;
   font-weight: 500;
+  text-align: center;
 }
 
 .lede {
@@ -1024,52 +1118,71 @@ details .small {
   color: var(--text-2);
   font-size: 15px;
   line-height: 22px;
+  text-align: center;
 }
 
-/* A sample result on the welcome screen, so the page shows what the app produces */
-.preview {
-  display: grid;
-  gap: 16px;
-  margin-top: 24px;
+.welcome-art-wrap {
+  position: relative;
+  width: calc(100% + 40px);
+  height: 238px;
+  margin: 16px -20px 0;
+  overflow: hidden;
 }
 
-.how {
-  display: grid;
-  gap: 16px;
-  padding: 24px 20px;
-}
-
-.how li {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 12px;
-}
-
-.how b {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--line-strong);
-  border-radius: 6px;
-  color: var(--text-2);
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.how strong {
+.welcome-art {
   display: block;
-  font-weight: 500;
-}
-
-.how .muted {
-  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+  border-radius: 22px;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 80%, transparent 100%);
 }
 
 .center {
   text-align: center;
+}
+
+.welcome-steps {
+  display: grid;
+  gap: 18px;
+  padding: 22px 20px 28px;
+}
+
+.welcome-step {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.step-number {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.welcome-step strong {
+  display: block;
+  padding-top: 2px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.welcome-step p {
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 /* Bottom tabs */
@@ -1079,8 +1192,10 @@ details .small {
   flex: none;
   grid-template-columns: repeat(4, 1fr);
   padding: 8px 8px 12px;
-  border-top: 1px solid var(--line);
-  background: var(--surface);
+  border-top: 1px solid rgb(116 53 49 / 0.1);
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(180deg, #fffdfc 0%, #fbefec 100%);
+  box-shadow: 0 -8px 20px rgb(90 39 35 / 0.045);
 }
 
 .tab {
@@ -1134,3 +1249,92 @@ body:has(#f-now:checked) .later,
 body:has(#f-later:checked) .now {
   display: none;
 }
+
+/* Planned courses use the existing card palette, grouped by course semester. */
+.path-semesters {
+  display: grid;
+  gap: 12px;
+}
+.path-semester > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  color: var(--text);
+}
+.path-semester > summary::-webkit-details-marker { display: none; }
+.path-semester > summary strong {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+.path-semester-count {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.path-chevron {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 3px;
+  border-right: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(45deg);
+}
+.path-semester[open] .path-chevron { transform: rotate(225deg); }
+.path-semester[open] > summary {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.path-semester .rows > li:last-child { padding-bottom: 0; }
+
+/* The full profile collapses with Home's scroll; the scroll layout stays stable. */
+.home-profile-shell {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.collapsing-profile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: auto;
+}
+.profile-expanded {
+  display: grid;
+  gap: 4px;
+  padding: 16px 16px 18px;
+}
+.profile-compact {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  opacity: 0;
+}
+.profile-compact[inert], .profile-expanded[inert] { pointer-events: none; }
+.compact-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.compact-person .avatar { width: 34px; height: 34px; font-size: 13px; }
+#compact-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-compact > a:last-child { flex: none; }

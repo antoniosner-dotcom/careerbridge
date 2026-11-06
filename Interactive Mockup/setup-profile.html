@@ -20,17 +20,13 @@
     <main class="screen">
       <div class="content">
         <div class="bar progress" style="--now:33%" role="img" aria-label="Step 1 of 3"></div>
-        <p class="note">Sample answers are already filled in. Your changes are saved as you go. Changing department starts your course list and plan over.</p>
+        <p class="note">Your choices are saved as you go. Changing department starts your course list and plan over.</p>
 
         <label class="field">Your name
           <input type="text" id="name" autocomplete="given-name">
         </label>
 
-        <label class="field">University
-          <select>
-            <option>Athens University of Economics and Business</option>
-          </select>
-        </label>
+        <div class="field fixed-field"><span>University</span><p>Athens University of Economics and Business</p></div>
 
         <div>
           <p class="label">Department</p>
@@ -42,6 +38,14 @@
             <div>
               <input class="sr" type="radio" name="department" id="d-mst" value="mst">
               <label class="choice" for="d-mst"><strong>Management Science and Technology</strong></label>
+            </div>
+            <div>
+              <input class="sr" type="radio" name="department" id="d-marketing" value="marketing">
+              <label class="choice" for="d-marketing"><strong>Marketing and Communication</strong></label>
+            </div>
+            <div>
+              <input class="sr" type="radio" name="department" id="d-economics" value="economics">
+              <label class="choice" for="d-economics"><strong>Economics</strong></label>
             </div>
           </div>
         </div>

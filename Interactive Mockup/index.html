@@ -13,46 +13,34 @@
     <main class="screen">
       <div class="intro">
         <div class="brand">
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path d="M9 32c5-12 25-12 30 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-            <path d="M15 34v-8M24 34V21M33 34v-8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-            <path d="M7 34h34" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-          </svg>
+          <img class="brand-logo" src="assets/aueb-hermes-mascot.png" alt="Hermes, AUEB mascot">
           CareerBridge
         </div>
         <h1>Choose your electives by the career they build</h1>
         <p class="lede">See which AUEB courses build the skills your target career needs, and how busy next semester will be</p>
 
-        <div class="card preview" aria-hidden="true">
-          <div class="rec-top">
-            <div>
-              <h3>Data Mining and Data Science</h3>
-              <p class="meta">3743 · 6 ECTS · 8th sem</p>
-            </div>
-            <p class="match">87%<small>match</small></p>
-          </div>
-          <div class="skills">
-            <div>
-              <div class="skill-name">Statistics <span>48% → 74%</span></div>
-              <div class="bar" style="--now:48%;--next:74%"></div>
-            </div>
-            <div>
-              <div class="skill-name">AI &amp; Machine Learning <span>30% → 62%</span></div>
-              <div class="bar" style="--now:30%;--next:62%"></div>
-            </div>
-          </div>
+        <div class="welcome-art-wrap">
+          <img class="welcome-art" src="assets/aueb-welcome-sketch.png" alt="A student looking toward a hand-drawn AUEB building">
         </div>
       </div>
-      <ol class="how">
-        <li><b>1</b><div><strong>Add your courses</strong><span class="muted">Tick the ones you have passed</span></div></li>
-        <li><b>2</b><div><strong>Pick a career goal</strong><span class="muted">Choose the job you want to work towards</span></div></li>
-        <li><b>3</b><div><strong>Get your plan</strong><span class="muted">Recommended courses and a weekly workload forecast</span></div></li>
-      </ol>
+      <section class="welcome-steps" aria-label="How CareerBridge works">
+        <div class="welcome-step">
+          <span class="step-number">1</span>
+          <div><strong>Add your courses</strong><p>Tick the ones you have passed</p></div>
+        </div>
+        <div class="welcome-step">
+          <span class="step-number">2</span>
+          <div><strong>Pick a career goal</strong><p>Choose the job you want to work towards</p></div>
+        </div>
+        <div class="welcome-step">
+          <span class="step-number">3</span>
+          <div><strong>Get your plan</strong><p>Recommended courses and a weekly workload forecast</p></div>
+        </div>
+      </section>
     </main>
     <div class="footer">
       <div class="stack" style="flex: 1">
-        <a class="btn" href="setup-profile.html">Get started</a>
-        <p class="small center">Interactive mockup. All names and scores are sample data, and your changes stay on this device.</p>
+        <a class="btn" href="setup-profile.html">Get Started</a>
       </div>
     </div>
   </div>

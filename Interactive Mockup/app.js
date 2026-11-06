@@ -1,9 +1,15 @@
 // CareerBridge mockup behaviour.
-// The student's answers and plan are saved in localStorage, so they survive page changes and reloads.
+// The student's answers and plan are saved only for the current browser tab session.
 // There is no recommendation algorithm yet: scores and skill levels are random placeholders.
 
-// The -v2 suffix ignores saves from before the empty sample student, which had courses pre-ticked.
-const STORAGE_KEY = 'careerbridge-student-v2'
+// The -v3 suffix starts with a blank profile, without the earlier sample answers or planned courses.
+const STORAGE_KEY = 'careerbridge-student-v3'
+try {
+  // Remove any saved trial from the earlier persistent-storage version of the mockup.
+  localStorage.removeItem(STORAGE_KEY)
+} catch {
+  // Storage may be unavailable in a restricted browser context.
+}
 const DEGREE_ECTS = 240
 const HOURS_PER_ECTS = 25
 const TEACHING_WEEKS = 13
@@ -16,7 +22,7 @@ function copy(value) {
 
 function loadStudent() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY))
     if (saved) return { ...copy(CB_DATA.sampleStudent), ...saved }
   } catch {
     // Storage can be blocked, for example in a private window. The sample student is used instead.
@@ -26,7 +32,7 @@ function loadStudent() {
 
 function saveStudent() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(student))
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(student))
   } catch {
     // Without storage, changes last until the page is left.
   }
@@ -51,15 +57,13 @@ function careersFor(departmentId) {
 }
 
 function currentCareer() {
+  if (!student.department || !student.career) return undefined
   const options = careersFor(student.department)
-  return options.find((c) => c.id === student.career) ?? options[0]
+  return options.find((c) => c.id === student.career)
 }
 
-/**
- * In this mockup, 1st-year courses (semesters 1 and 2) are mandatory and the rest are electives.
- * This simplifies the guides, where compulsory courses run into the 3rd year. data.js keeps their real type.
- */
 function isMandatory(course) {
+  if (course.department === 'economics') return course.type === 'Compulsory'
   return course.semester <= 2
 }
 
@@ -179,7 +183,8 @@ function courseUrl(id) {
 
 /** The course-guide line shown under every course name, like "3743 · 6 ECTS · 8th sem". */
 function guideLine(course) {
-  return `${course.code} · ${course.ects} ECTS · ${ordinal(course.semester)} sem`
+  const semesters = course.offeredSemesters ?? [course.semester]
+  return `${course.code} · ${course.ects} ECTS · ${semesters.map(ordinal).join('/')} sem`
 }
 
 /**
@@ -264,22 +269,52 @@ function recommendationCard(course) {
 /** The completed-course ticks, grouped by semester, for setup step 2 and the "Your courses" page. */
 function courseChecklist() {
   const list = $('#course-groups')
+  if (!student.department || !student.year) {
+    list.innerHTML = '<p class="empty-hint">Choose your department and year of study first.</p>'
+    return
+  }
   const courses = coursesUpToYear(student.department, student.year)
   const semesters = [...new Set(courses.map((c) => c.semester))].sort((a, b) => a - b)
   list.innerHTML = semesters
     .map((semester) => {
       const group = courses.filter((c) => c.semester === semester)
-      const rows = group.map((c) => `<label class="check"><input type="checkbox" value="${c.id}" ${isCompleted(c.id) ? 'checked' : ''}>${c.name}</label>`)
-      return `<section class="card"><h3>${ordinal(semester)} semester · ${isMandatory(group[0]) ? 'Mandatory' : 'Electives'}</h3>${rows.join('')}</section>`
+      const mandatoryCount = group.filter(isMandatory).length
+      const semesterKind = mandatoryCount === group.length ? 'Mandatory' : mandatoryCount ? 'Mandatory and elective options' : 'Electives'
+      const rows = group.map((c) => `<label class="check"><input type="checkbox" value="${c.id}" ${isCompleted(c.id) ? 'checked' : ''}><span class="check-course"><span>${c.name}</span><small>${courseKind(c)}</small></span></label>`)
+      return `<section class="card semester-group" data-semester="${semester}"><div class="semester-head"><h3>${ordinal(semester)} semester · ${semesterKind}</h3><button class="select-all" type="button" data-semester="${semester}">Select all</button></div>${rows.join('')}</section>`
     })
     .join('')
-  list.addEventListener('change', () => {
+  if (courses.length === 0) {
+    list.innerHTML = '<p class="empty-hint">No courses are listed for these choices.</p>'
+  }
+  const syncSelectAllButtons = () => {
+    list.querySelectorAll('.semester-group').forEach((section) => {
+      const inputs = [...section.querySelectorAll('input[type="checkbox"]')]
+      const button = section.querySelector('.select-all')
+      const allSelected = inputs.length > 0 && inputs.every((input) => input.checked)
+      button.textContent = allSelected ? 'Deselect all' : 'Select all'
+      button.setAttribute('aria-pressed', String(allSelected))
+    })
+  }
+  const saveVisibleCourses = () => {
     // Keep ticks on courses this list does not show, like those after the current year.
     const shown = new Set(courses.map((c) => c.id))
     const ticked = [...list.querySelectorAll('input:checked')].map((input) => input.value)
     student.completed = [...student.completed.filter((id) => !shown.has(id)), ...ticked]
     saveStudent()
-  })
+    syncSelectAllButtons()
+  }
+  list.onchange = saveVisibleCourses
+  list.onclick = (event) => {
+    const button = event.target.closest('.select-all')
+    if (!button) return
+    const section = button.closest('.semester-group')
+    const inputs = [...section.querySelectorAll('input[type="checkbox"]')]
+    const allSelected = inputs.length > 0 && inputs.every((input) => input.checked)
+    inputs.forEach((input) => { input.checked = !allSelected })
+    saveVisibleCourses()
+  }
+  syncSelectAllButtons()
 }
 
 /** The name field, for setup step 1 and the "Your details" page reached from Home. */
@@ -307,12 +342,16 @@ function yearChoice() {
 /** The career goal choices, for setup step 3 and the "Your career goal" page reached from Home. */
 function careerChoices() {
   const list = $('#career-list')
-  const selected = currentCareer().id
-  list.innerHTML = careersFor(student.department)
+  const careers = careersFor(student.department)
+  if (!careers.length) {
+    list.innerHTML = '<p class="empty-hint">Choose your department in the previous step to see career goals.</p>'
+    return
+  }
+  list.innerHTML = careers
     .map(
       (career) => `
       <div>
-        <input class="sr" type="radio" name="career" id="c-${career.id}" value="${career.id}" ${career.id === selected ? 'checked' : ''}>
+        <input class="sr" type="radio" name="career" id="c-${career.id}" value="${career.id}" ${career.id === student.career ? 'checked' : ''}>
         <label class="choice" for="c-${career.id}">
           <strong>${career.name}</strong>
           <span class="muted">${career.description}</span>
@@ -340,7 +379,7 @@ const pages = {
         student.department = input.value
         student.completed = []
         student.planned = []
-        student.career = currentCareer().id
+        student.career = ''
         saveStudent()
       })
     }
@@ -357,7 +396,7 @@ const pages = {
   },
 
   myCourses() {
-    $('#courses-subtitle').textContent = `Up to your ${ordinal(student.year)} year`
+    $('#courses-subtitle').textContent = student.year ? `Up to your ${ordinal(student.year)} year` : 'Choose your department and year first'
     courseChecklist()
   },
 
@@ -370,7 +409,19 @@ const pages = {
   },
 
   home() {
+    document.querySelectorAll('[data-exit]').forEach((link) => link.addEventListener('click', () => {
+      try {
+        sessionStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(STORAGE_KEY)
+      } catch {
+        // The link still returns to the welcome screen if storage is unavailable.
+      }
+    }))
     const career = currentCareer()
+    if (!career || !student.year) {
+      location.replace('setup-profile.html')
+      return
+    }
     const today = todayLevels()
     const withPlan = levelsWith(student.planned)
     const ects = completedCourses().reduce((sum, id) => sum + courseById(id).ects, 0)
@@ -390,6 +441,42 @@ const pages = {
       }),
     )
     $('#career-name').textContent = career.name
+    $('#compact-name').textContent = name
+    $('#compact-avatar').textContent = initials(name)
+    const scrollArea = document.querySelector('.home-scroll')
+    const shell = document.querySelector('.home-profile-shell')
+    const profile = document.querySelector('.collapsing-profile')
+    const expanded = document.querySelector('.profile-expanded')
+    const compact = document.querySelector('.profile-compact')
+    let expandedHeight = 0
+    let scrollFrame = 0
+    const updateProfile = () => {
+      scrollFrame = 0
+      const distance = Math.max(1, expandedHeight - 64)
+      const progress = Math.min(1, Math.max(0, scrollArea.scrollTop / distance))
+      profile.style.height = `${expandedHeight - distance * progress}px`
+      expanded.style.opacity = String(Math.max(0, 1 - progress * 1.8))
+      compact.style.opacity = String(Math.max(0, (progress - 0.55) / 0.45))
+      const isCompact = progress >= 0.65
+      // Only the visible version participates in keyboard navigation.
+      if (isCompact && expanded.contains(document.activeElement)) compact.querySelector('a').focus({ preventScroll: true })
+      if (!isCompact && compact.contains(document.activeElement)) expanded.querySelector('a').focus({ preventScroll: true })
+      expanded.inert = isCompact
+      compact.inert = !isCompact
+      expanded.setAttribute('aria-hidden', String(isCompact))
+      compact.setAttribute('aria-hidden', String(!isCompact))
+      profile.style.borderRadius = `0 0 ${26 - 10 * progress}px ${26 - 10 * progress}px`
+    }
+    const measureProfile = () => {
+      expandedHeight = expanded.offsetHeight
+      shell.style.height = `${expandedHeight}px`
+      updateProfile()
+    }
+    scrollArea.addEventListener('scroll', () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateProfile)
+    }, { passive: true })
+    new ResizeObserver(measureProfile).observe(expanded)
+    measureProfile()
     $('#skills-title').textContent = `Skills for ${career.name}`
     $('#fit-now').textContent = `${now}%`
     $('#fit-gain').textContent = `${Math.round(alignment(withPlan))}% with your plan`
@@ -414,6 +501,10 @@ const pages = {
   },
 
   recommendations() {
+    if (!currentCareer()) {
+      location.replace('setup-profile.html')
+      return
+    }
     const { now, later } = recommendations()
     $('#career-subtitle').textContent = `For your ${currentCareer().name} goal`
     $('#my-courses').textContent = `Your completed courses · ${completedCourses().length}`
@@ -451,7 +542,7 @@ const pages = {
         <div class="stack">
           <p class="meta">${guideLine(course)} · ${courseKind(course)} ·${hoursText(weeklyHours(course))}/wk</p>
           ${planned ? '<p class="statuses"><span class="status good">In your plan</span></p>' : ''}
-          <p>${course.summary}</p>
+          ${course.summary ? `<p>${course.summary}</p>` : ''}
         </div>
 
         <section class="card">
@@ -519,22 +610,34 @@ const pages = {
   },
 
   compare() {
+    const career = currentCareer()
+    if (!career) {
+      $('#pick-a').innerHTML = '<option value="">Choose a career goal first</option>'
+      $('#pick-b').innerHTML = '<option value="">Choose a career goal first</option>'
+      $('#comparison').innerHTML = '<p class="empty-hint">Complete your profile and choose a career goal before comparing courses.</p>'
+      return
+    }
     const { now, later } = recommendations()
     const ids = [...new Set([...now, ...later].map((c) => c.id).concat(student.planned))]
-    const requested = new URLSearchParams(location.search).get('a')
+    const params = new URLSearchParams(location.search)
+    const requested = params.get('a')
     if (courseById(requested) && !ids.includes(requested)) ids.unshift(requested)
-    let a = ids.includes(requested) ? requested : ids[0]
-    let b = ids.find((id) => id !== a)
+    let a = ids.includes(requested) ? requested : ''
+    let b = ''
 
-    const options = ids.map((id) => `<option value="${id}">${courseById(id).name}</option>`).join('')
+    const options = `<option value="">Choose a course</option>${ids.map((id) => `<option value="${id}">${courseById(id).name}</option>`).join('')}`
     const pickA = $('#pick-a')
     const pickB = $('#pick-b')
     pickA.innerHTML = options
     pickB.innerHTML = options
-    pickA.value = a
+    pickA.value = a || ''
     pickB.value = b
 
     const render = () => {
+      if (!a || !b) {
+        $('#comparison').innerHTML = '<p class="empty-hint">Choose two courses to compare their skills.</p>'
+        return
+      }
       if (a === b) {
         $('#comparison').innerHTML = '<p class="note">Pick two different courses to compare.</p>'
         return
@@ -624,16 +727,23 @@ const pages = {
       $('#fit-title').textContent = `${currentCareer().name} skills with this plan`
       $('#fit-next').textContent = `${withPlan}%`
       $('#fit-text').textContent = `Up from ${now}% today`
-      $('#plan-list').innerHTML = student.planned
-        .map((id) => {
-          const course = courseById(id)
-          return `
-            <li>
-              <a href="${courseUrl(id)}"><strong>${course.name}</strong><span class="meta">${guideLine(course)} · ${hoursText(weeklyHours(course))}/wk</span></a>
-              <button class="remove" type="button" data-remove="${id}" aria-label="Remove ${course.name} from plan"></button>
-            </li>`
-        })
-        .join('')
+      const closedSemesters = new Set(
+        [...$('#plan-list').querySelectorAll('details:not([open])')].map((section) => Number(section.dataset.semester)),
+      )
+      const plannedCourses = student.planned.map(courseById).filter(Boolean)
+      const semesters = [...new Set(plannedCourses.map((course) => course.semester))].sort((a, b) => a - b)
+      $('#plan-list').innerHTML = semesters.map((semester) => {
+        const courses = plannedCourses.filter((course) => course.semester === semester)
+        const rows = courses.map((course) => `
+          <li>
+            <a href="${courseUrl(course.id)}"><strong>${course.name}</strong><span class="meta">${guideLine(course)} · ${hoursText(weeklyHours(course))}/wk</span></a>
+            <button class="remove" type="button" data-remove="${course.id}" aria-label="Remove ${course.name} from plan"></button>
+          </li>`).join('')
+        return `<details class="card path-semester" data-semester="${semester}" ${closedSemesters.has(semester) ? '' : 'open'}>
+          <summary><span><strong>Semester ${semester}</strong><span class="path-semester-count">${courses.length} planned ${courses.length === 1 ? 'course' : 'courses'}</span></span><span class="path-chevron" aria-hidden="true"></span></summary>
+          <ul class="rows">${rows}</ul>
+        </details>`
+      }).join('')
       $('#total-hours').textContent = hoursText(totalHours())
       renderForecast()
     }
