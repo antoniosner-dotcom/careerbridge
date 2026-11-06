@@ -7,6 +7,9 @@ A mobile app that helps AUEB students choose their elective courses based on the
 
 ## HW1: Interactive mockup
 
+This is a mockup so there only 4 of the univirsity's departments.
+All the recommendations and results of the app are random, since there is no backend.
+
 The clickable mockup is in [`Interactive Mockup/`](Interactive%20Mockup/). Download the repo and open `index.html` in a browser. No installation is needed.
 
 ## Team
@@ -16,4 +19,3 @@ The clickable mockup is in [`Interactive Mockup/`](Interactive%20Mockup/). Downl
 | Alexandra Karvela | 3230066 | p3230066@aueb.gr
 | Antonios Nerantzakis | 3230139 | p3230139@aueb.gr
 
-Please let us know if we should make any changes to fully match the requirements of the description.
